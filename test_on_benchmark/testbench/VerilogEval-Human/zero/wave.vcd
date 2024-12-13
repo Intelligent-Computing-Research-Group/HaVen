@@ -1,0 +1,73 @@
+$date
+	Sat Nov  9 17:08:09 2024
+$end
+
+$version
+	Synopsys VCS version L-2016.06_Full64
+$end
+
+$timescale
+	1ps
+$end
+
+$comment Csum: 1 dfc5efac9b22fcd1 $end
+
+
+$scope module tb $end
+$var wire 1 ! tb_mismatch $end
+$var reg 1 " zero_ref $end
+$var reg 1 # zero_dut $end
+
+$scope module stim1 $end
+$var wire 1 $ clk $end
+$upscope $end
+
+$upscope $end
+
+$enddefinitions $end
+
+#0
+$dumpvars
+0!
+0#
+0"
+0$
+$end
+#5
+1$
+#10
+0$
+#15
+1$
+#20
+0$
+#25
+1$
+#30
+0$
+#35
+1$
+#40
+0$
+#45
+1$
+#50
+0$
+#55
+1$
+#60
+0$
+#65
+1$
+#70
+0$
+#75
+1$
+#80
+0$
+#85
+1$
+#90
+0$
+#95
+1$

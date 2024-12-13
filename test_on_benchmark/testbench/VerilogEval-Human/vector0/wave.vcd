@@ -1,0 +1,144 @@
+$date
+	Sat Nov  9 17:06:30 2024
+$end
+
+$version
+	Synopsys VCS version L-2016.06_Full64
+$end
+
+$timescale
+	1ps
+$end
+
+$comment Csum: 1 dfc5efac9b22fcd1 $end
+
+
+$scope module tb $end
+$var wire 1 ! tb_mismatch $end
+$var reg 3 " vec [2:0] $end
+$var reg 3 # outv_ref [2:0] $end
+$var reg 3 $ outv_dut [2:0] $end
+$var reg 1 % o2_ref $end
+$var reg 1 & o2_dut $end
+$var reg 1 ' o1_ref $end
+$var reg 1 ( o1_dut $end
+$var reg 1 ) o0_ref $end
+$var reg 1 * o0_dut $end
+
+$scope module stim1 $end
+$var wire 1 + clk $end
+$upscope $end
+
+$upscope $end
+
+$enddefinitions $end
+
+#0
+$dumpvars
+0*
+0)
+0(
+0'
+0&
+0%
+0!
+b000 $
+b000 #
+b000 "
+0+
+$end
+#5
+1+
+#10
+0+
+#15
+1+
+b001 "
+1*
+b001 $
+1)
+b001 #
+#20
+0+
+#25
+1+
+b010 "
+0*
+1(
+b010 $
+0)
+1'
+b010 #
+#30
+0+
+#35
+1+
+b011 "
+1*
+b011 $
+1)
+b011 #
+#40
+0+
+#45
+1+
+b100 "
+0*
+0(
+1&
+b100 $
+0)
+0'
+1%
+b100 #
+#50
+0+
+#55
+1+
+b101 "
+1*
+b101 $
+1)
+b101 #
+#60
+0+
+#65
+1+
+b110 "
+0*
+1(
+b110 $
+0)
+1'
+b110 #
+#70
+0+
+#75
+1+
+b111 "
+1*
+b111 $
+1)
+b111 #
+#80
+0+
+#85
+1+
+b000 "
+0*
+0(
+0&
+b000 $
+0)
+0'
+0%
+b000 #
+#90
+0+
+#95
+1+
+b001 "
+1*
+b001 $
+1)
+b001 #

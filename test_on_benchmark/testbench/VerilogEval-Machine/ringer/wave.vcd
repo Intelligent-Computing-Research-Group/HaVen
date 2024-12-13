@@ -1,0 +1,128 @@
+$date
+	Wed Sep 11 17:59:37 2024
+$end
+
+$version
+	Synopsys VCS version L-2016.06_Full64
+$end
+
+$timescale
+	1ps
+$end
+
+$comment Csum: 1 dfc5efac9b22fcd1 $end
+
+
+$scope module tb $end
+$var wire 1 ! tb_mismatch $end
+$var reg 1 " ring $end
+$var reg 1 # vibrate_mode $end
+$var reg 1 $ ringer_ref $end
+$var reg 1 % ringer_dut $end
+$var reg 1 & motor_ref $end
+$var reg 1 ' motor_dut $end
+
+$scope module stim1 $end
+$var wire 1 ( clk $end
+$upscope $end
+
+$upscope $end
+
+$enddefinitions $end
+
+#0
+$dumpvars
+0'
+0&
+0"
+0%
+0$
+0!
+0#
+0(
+$end
+#5
+1(
+#10
+0(
+#15
+1(
+1"
+1%
+1$
+#20
+0(
+#25
+1(
+1#
+0%
+1'
+0$
+1&
+0"
+0'
+0&
+#30
+0(
+#35
+1(
+1"
+1'
+1&
+#40
+0(
+#45
+1(
+0#
+1%
+0'
+1$
+0&
+0"
+0%
+0$
+#50
+0(
+#55
+1(
+1"
+1%
+1$
+#60
+0(
+#65
+1(
+1#
+0%
+1'
+0$
+1&
+0"
+0'
+0&
+#70
+0(
+#75
+1(
+1"
+1'
+1&
+#80
+0(
+#85
+1(
+0#
+1%
+0'
+1$
+0&
+0"
+0%
+0$
+#90
+0(
+#95
+1(
+1"
+1%
+1$

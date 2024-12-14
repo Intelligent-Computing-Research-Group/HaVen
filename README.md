@@ -37,19 +37,44 @@ Code Generation Aligned with HDL Engineers</h1></div>
 
 ## Introduction
 
+### HaVen: Hallucination-Mitigated LLM for Verilog Code Generation Aligned with HDL Engineers
+
+This repository accompanies the paper **"HaVen: Hallucination-Mitigated LLM for Verilog Code Generation Aligned with HDL Engineers"**, accepted at DATE 2025. HaVen is a novel framework designed to enhance the alignment of large language models (LLMs) with hardware description language (HDL) engineering practices, mitigating logical, symbolic, and knowledge hallucinations in Verilog code generation.
+
+
 ## Installation 
 
 ## Usage
+### Auto Test on Benchmarks
+
+Our repository includes a script to evaluate the model's performance on **VerilogEval** and **RTLLM** benchmarks.
+
+1. **Prepare Tasks**:
+   - Write the names of tasks to evaluate in `test_on_benchmark/tasks_to_do.txt`.
+
+2. **Configure Test Script**:
+   - Open `test_on_benchmark/run.sh`.
+   - Set the following variables:
+     - `path`: Path to the directory containing the generated Verilog code.
+     - `n`: Number of code candidates to evaluate per task.
+   - The generated Verilog code for **HaVen** is available at:
+     ```
+     test_on_benchmark/model_output/HaVen
+     ```
+
+3. **Run the Script**:
+   ```bash
+   bash test_on_benchmark/run.sh
 
 ## Citation
+If you find this repository or our research helpful, please cite our paper:
 ```
-to be included
+@inproceedings{haven2025,
+  title     = {HaVen: Hallucination-Mitigated LLM for Verilog Code Generation Aligned with HDL Engineers},
+  author    = {Yiyao Yang and Fu Teng and Pengju Liu and Mengnan Qi and Chenyang Lv and Ji Li and Xuhong Zhang and Zhezhi He},
+  booktitle = {Design, Automation & Test in Europe (DATE)},
+  year      = {2025}
+}
 ```
+For questions or issues, feel free to open an issue or contact the authors. Thank you for using HaVen!
 
-
-
-# Auto test on benchmarks
-Our script supports automatically testing on VerilogEval and RTLLM.
-Usage:
-1. Write the name of tasks to do in test_on_benchmark/tasks_to_do.txt
-2. Run test_on_benchmark/run.sh

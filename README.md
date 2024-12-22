@@ -45,10 +45,10 @@ This repository accompanies the paper **"HaVen: Hallucination-Mitigated LLM for 
 ## Installation 
 
 ## Usage
-## Train and Fine-tuning
+### Train and Fine-tuning
 The training environment configuration and running methods refer to the llamafactory project.
 
-## Quick Start
+### Quick Start
 
 ```python
 from transformers import pipeline
@@ -64,9 +64,9 @@ result = generator(prompt , max_length=2048,num_return_sequences=1, temperature=
 response = result[0]["generated_text"]
 print("Response:", response)
 ```
-## Model Inference
+### Model Inference
 
-## Models and Datasets
+### Models and Datasets
 
 |      | Base Model                                                                                          | CodeV                                                               |
 | ---- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |

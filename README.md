@@ -81,6 +81,60 @@ response = result[0]["generated_text"]
 print("Response:", response)
 ```
 ### Model Inference
+To perform inference on the VerilogEval benchmark, use the script located at:  
+`model_inference/inference_VerilogEval.py`  
+
+#### Example Command  
+The following example demonstrates inference using the `deepseek-coder-6.7b` model:  
+```bash
+python model_inference/inference_VerilogEval.py \
+  --model deepseek-ai/deepseek-coder-6.7b-instruct \
+  --n 1 \
+  --temperature 1.0 \
+  --gpu_name 7 \
+  --output_dir ./your_output_path \
+  --output_file your_output_file.jsonl \
+  --bench_type Machine
+```
+
+To perform inference on the RTLLM benchmark, use the script located at:
+`model_inference/inference_RTLLM.py`
+
+#### Example Command
+The following example demonstrates inference using the `deepseek-coder-6.7b` model:
+```bash
+python model_inference/inference_RTLLM.py \
+  --model deepseek-ai/deepseek-coder-6.7b-instruct \
+  --n 5 \
+  --temperature 0.5 \
+  --gpu_name 5 \
+  --output_dir ./your_output_path
+```
+
+#### Parameters
+
+Below is a description of the key parameters used in the inference scripts:
+
+- `--model`  
+  Specifies the pre-trained or fine-tuned model to use for inference. Example: `deepseek-ai/deepseek-coder-6.7b-instruct`.
+
+- `--n`  
+  The number of samples to generate for each input. A higher value increases diversity but requires more computational resources.
+
+- `--temperature`  
+  Controls the randomness of predictions. Values closer to `0` make the output more deterministic, while higher values (e.g., `1.0`) allow for more diversity.
+
+- `--gpu_name`  
+  Identifies the GPU to be used for running the inference. Specify the GPU ID (e.g., `0`, `1`, `7`).
+
+- `--output_dir`  
+  The directory where the inference results will be saved. Ensure the directory exists or can be created.
+
+- `--output_file` (optional, VerilogEval-specific)  
+  Specifies the name of the output file to save results. The file format is typically `.jsonl`.
+
+- `--bench_type` (VerilogEval-specific)  
+  Indicates the type of benchmark evaluation. Example: `Machine`. Refer to the benchmark documentation for valid types.
 
 ### Models and Datasets
 

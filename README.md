@@ -54,6 +54,7 @@ VCS is a Verilog compiler required for automated testing on benchmarks. Follow t
 1. Obtain VCS from Synopsys. Ensure you have the required license to use it.
 2. Install VCS following the instructions provided in the official Synopsys documentation.
 3. Add the VCS executable to your system's PATH environment variable.
+
 Verify the installation by running:
 ```bash
 vcs -help

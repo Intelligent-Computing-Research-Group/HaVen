@@ -45,6 +45,35 @@ This repository accompanies the paper **"HaVen: Hallucination-Mitigated LLM for 
 ## Installation 
 
 ## Usage
+## Train and Fine-tuning
+The training environment configuration and running methods refer to the llamafactory project.
+
+## Quick Start
+
+```python
+from transformers import pipeline
+import torch
+prompt= "FILL IN THE QUESTION"
+generator = pipeline(
+  model="HaVen",
+  task="text-generation",
+  torch_dtype=torch.bfloat16,
+  device_map="auto",
+)
+result = generator(prompt , max_length=2048,num_return_sequences=1, temperature=0.0)
+response = result[0]["generated_text"]
+print("Response:", response)
+```
+## Model Inference
+
+## Models and Datasets
+
+|      | Base Model                                                                                          | CodeV                                                               |
+| ---- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| 6.7B | [deepseek-ai/deepseek-coder-6.7b-base](https://huggingface.co/deepseek-ai/deepseek-coder-6.7b-base) | Coming Soon                                                         |
+| 7B   | [codellama/CodeLlama-7b-Python-hf](https://huggingface.co/codellama/CodeLlama-7b-Python-hf)         | Coming Soon                                                         |
+| 7B   | [Qwen/CodeQwen1.5-7B-Chat](https://huggingface.co/Qwen/CodeQwen1.5-7B-Chat)                         | Coming Soon                                                         |
+
 ### Auto Test on Benchmarks
 
 Our repository includes a script to evaluate the model's performance on **VerilogEval** and **RTLLM** benchmarks.

@@ -43,6 +43,21 @@ This repository accompanies the paper **"HaVen: Hallucination-Mitigated LLM for 
 
 
 ## Installation 
+### 1. Install LLaMA-Factory for Training and Fine-tuning
+For training and fine-tuning, install [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) by following their installation instructions.
+## 2. Install Dependencies for Model Inference
+```bash
+pip install torch transformers
+```
+## 3. Install VCS for Auto Test on Benchmarks
+VCS is a Verilog compiler required for automated testing on benchmarks. Follow these steps to install and configure VCS:
+1. Obtain VCS from Synopsys. Ensure you have the required license to use it.
+2. Install VCS following the instructions provided in the official Synopsys documentation.
+3. Add the VCS executable to your system's PATH environment variable.
+Verify the installation by running:
+```bash
+vcs -help
+```
 
 ## Usage
 ### Train and Fine-tuning

@@ -1,12 +1,12 @@
 <p align="center">
-<img src="HaVen.webp" alt="HaVen" width="220" align="center">
+<img src="logo.jpg" alt="HaVen" width="220" align="center">
 </p>
 
 <div align="center"><h1>&nbsp;HAVEN: Hallucination-Mitigated LLM for Verilog
 Code Generation Aligned with HDL Engineers</h1></div>
 
 <p align="center">
-| <a href="http://arxiv.org/"><b>Paper</b></a> | <a href="http://arxiv.org/"><b>Blog</b></a> |
+| <a href="http://arxiv.org/"><b>Preprint</b></a> | <a href="http://arxiv.org/"><b>Paper</b></a> |
 </p>
 
 

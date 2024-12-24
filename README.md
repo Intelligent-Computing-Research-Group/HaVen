@@ -138,7 +138,7 @@ Below is a description of the key parameters used in the inference scripts:
 
 ### Models and Datasets
 
-|      | Base Model                                                                                          | CodeV                                                               |
+|      | Base Model                                                                                          | HaVen                                                               |
 | ---- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | 6.7B | [deepseek-ai/deepseek-coder-6.7b-base](https://huggingface.co/deepseek-ai/deepseek-coder-6.7b-base) | Coming Soon                                                         |
 | 7B   | [codellama/CodeLlama-7b-Python-hf](https://huggingface.co/codellama/CodeLlama-7b-Python-hf)         | Coming Soon                                                         |

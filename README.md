@@ -147,7 +147,10 @@ Below is a description of the key parameters used in the inference scripts:
 Our repository includes a script to evaluate the model's performance on **VerilogEval** and **RTLLM** benchmarks.
 
 1. **Prepare Tasks**:
-   - Write the names of tasks to evaluate in `test_on_benchmark/tasks_to_do.txt`.
+   - The task list of VerilogEval-Human is in `test_on_benchmark/tasks_verilogeval_human.txt`.
+   - The task list of VerilogEval-Machine is in `test_on_benchmark/tasks_verilogeval_machine.txt`.
+   - The task list of RTLLM is in `test_on_benchmark/tasks_verilogeval_RTLLM.txt`.
+   - Or you can customize the names of tasks to evaluate in `test_on_benchmark/tasks_to_do.txt`.
 
 2. **Configure Test Script**:
    - Open `test_on_benchmark/run.sh`.

@@ -71,7 +71,7 @@ from transformers import pipeline
 import torch
 prompt= "FILL IN THE QUESTION"
 generator = pipeline(
-  model="HaVen",
+  model="HaVen-CodeQwen",
   task="text-generation",
   torch_dtype=torch.bfloat16,
   device_map="auto",

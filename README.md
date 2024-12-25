@@ -136,13 +136,11 @@ Below is a description of the key parameters used in the inference scripts:
 - `--bench_type` (VerilogEval-specific)  
   Indicates the type of benchmark evaluation. Example: `Machine`. Refer to the benchmark documentation for valid types.
 
-### Models and Datasets
+### Models
 
 |      | Base Model                                                                                          | HaVen                                                               |
 | ---- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| 6.7B | [deepseek-ai/deepseek-coder-6.7b-base](https://huggingface.co/deepseek-ai/deepseek-coder-6.7b-base) | Coming Soon                                                         |
-| 7B   | [codellama/CodeLlama-7b-Python-hf](https://huggingface.co/codellama/CodeLlama-7b-Python-hf)         | Coming Soon                                                         |
-| 7B   | [Qwen/CodeQwen1.5-7B-Chat](https://huggingface.co/Qwen/CodeQwen1.5-7B-Chat)                         | Coming Soon                                                         |
+| 7B   | [Qwen/CodeQwen1.5-7B-Chat](https://huggingface.co/Qwen/CodeQwen1.5-7B-Chat)                         | [HaVen-CodeQwen](https://huggingface.co/yangyiyao/HaVen-CodeQwen)|
 
 ### Auto Test on Benchmarks
 

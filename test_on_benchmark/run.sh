@@ -247,7 +247,7 @@ test_one_file() {
 
 
 # File containing the tasks
-TASK_FILE="tasks_to_do.txt"
+TASK_FILE="tasks_verilogeval_RTLLM.txt"
 
 # Check if the file exists
 if [[ ! -f $TASK_FILE ]]; then
@@ -277,16 +277,20 @@ for key in "${!filtered_dic[@]}"; do
     echo "[$key]=${filtered_dic[$key]}"
 done
 
-path="/data/YYY/github_repo/HaVen/test_on_benchmark/model_output/ground_truth/RTLLM"
+path="/data/YYY/RTLLM/mix_tmp0.2"
 
 benchmark_name="RTLLM"
 file_id=1
 n=0
 
+files_to_run=5
+
 # three arguments are file of code to test, benchmark name, and filtered_dic
-test_one_file "test_${file_id}" "${benchmark_name}"
-((n++))
-((file_id++))
+while ((n < files_to_run)); do
+    test_one_file "test_${file_id}" "${benchmark_name}"
+    ((n++))
+    ((file_id++))
+done
 
 total_syntax_success=0
 total_func_success=0
@@ -303,3 +307,7 @@ done
 
 echo "${total_syntax_success}/${#design_name[@]}"
 echo "${total_func_success}/${#design_name[@]}"
+
+for item in "${design_name[@]}"; do
+    echo "$item: ${filtered_dic[$item]}"
+done

@@ -6,7 +6,7 @@
 Code Generation Aligned with HDL Engineers</h1></div>
 
 <p align="center">
-| <a href="http://arxiv.org/"><b>Preprint</b></a> | <a href="http://arxiv.org/"><b>Paper</b></a> |
+| <a href="https://arxiv.org/pdf/2501.04908"><b>Preprint</b></a> | <a href="https://arxiv.org/pdf/2501.04908"><b>Paper</b></a> |
 </p>
 
 
@@ -32,8 +32,8 @@ Code Generation Aligned with HDL Engineers</h1></div>
 
 
 ## News
-
-- [2024/6] First work-around of HaVen is done!
+- [2024/12] Code of HaVen is Released.
+- [2024/11] HaVen is accpeted by DATE 2025.
 
 ## Introduction
 

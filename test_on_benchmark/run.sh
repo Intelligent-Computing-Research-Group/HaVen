@@ -175,6 +175,74 @@ declare -A result_dic=(
     [width_8to16]='{"syntax_success": 0, "func_success": 0}'
 )
 
+# Function to calculate binomial coefficient
+binomial() {
+    local n=$1
+    local k=$2
+    if [ $k -gt $n ]; then
+        echo 0
+        return
+    fi
+    local result=1
+    for ((i = 1; i <= k; i++)); do
+        result=$((result * (n - i + 1) / i))
+    done
+    echo $result
+}
+
+# Function to calculate pass@k
+calculate_pass_at_k() {
+    local n=$1  # number of samples/attempts
+    local k=$2  # k in pass@k
+    local total_problems=${#design_name[@]}
+    local syntax_pass_sum=0
+    local func_pass_sum=0
+
+    # Calculate for each problem
+    for item in "${design_name[@]}"; do
+        local syntax_success=$(echo "${filtered_dic[$item]}" | jq -r '.syntax_success')
+        local func_success=$(echo "${filtered_dic[$item]}" | jq -r '.func_success')
+        
+        # Calculate for syntax success
+        if [ $syntax_success -gt 0 ]; then
+            local c=$syntax_success
+            if [ $c -gt $n ]; then
+                c=$n
+            fi
+            local n_minus_c=$((n - c))
+            local binom_n_minus_c_k=$(binomial $n_minus_c $k)
+            local binom_n_k=$(binomial $n $k)
+            if [ $binom_n_k -ne 0 ]; then
+                local pass_prob=$(bc -l <<< "scale=4; 1 - $binom_n_minus_c_k / $binom_n_k")
+                syntax_pass_sum=$(bc -l <<< "scale=4; $syntax_pass_sum + $pass_prob")
+            fi
+        fi
+        
+        # Calculate for functional success
+        if [ $func_success -gt 0 ]; then
+            local c=$func_success
+            if [ $c -gt $n ]; then
+                c=$n
+            fi
+            local n_minus_c=$((n - c))
+            local binom_n_minus_c_k=$(binomial $n_minus_c $k)
+            local binom_n_k=$(binomial $n $k)
+            if [ $binom_n_k -ne 0 ]; then
+                local pass_prob=$(bc -l <<< "scale=4; 1 - $binom_n_minus_c_k / $binom_n_k")
+                func_pass_sum=$(bc -l <<< "scale=4; $func_pass_sum + $pass_prob")
+            fi
+        fi
+    done
+
+    # Calculate average
+    local syntax_pass_at_k=$(bc -l <<< "scale=4; ($syntax_pass_sum / $total_problems) * 100")
+    local func_pass_at_k=$(bc -l <<< "scale=4; ($func_pass_sum / $total_problems) * 100")
+    
+    echo "pass@$k:"
+    echo "  Syntax: $syntax_pass_at_k%"
+    echo "  Functionality: $func_pass_at_k%"
+}
+
 exec_shell() {
     local cmd_str="$1"
     local timeout=8
@@ -247,7 +315,7 @@ test_one_file() {
 
 
 # File containing the tasks
-TASK_FILE="tasks_verilogeval_RTLLM.txt"
+TASK_FILE="tasks_verilogeval_RTLLM.txt" # TODO
 
 # Check if the file exists
 if [[ ! -f $TASK_FILE ]]; then
@@ -277,13 +345,13 @@ for key in "${!filtered_dic[@]}"; do
     echo "[$key]=${filtered_dic[$key]}"
 done
 
-path="/data/YYY/RTLLM/mix_tmp0.2"
+path="/data/YYY/LLM-verilog/rtllm_result" # TODO
 
-benchmark_name="RTLLM"
+benchmark_name="RTLLM" # TODO
 file_id=1
 n=0
 
-files_to_run=5
+files_to_run=5 # TODO
 
 # three arguments are file of code to test, benchmark name, and filtered_dic
 while ((n < files_to_run)); do
@@ -309,5 +377,14 @@ echo "${total_syntax_success}/${#design_name[@]}"
 echo "${total_func_success}/${#design_name[@]}"
 
 for item in "${design_name[@]}"; do
-    echo "$item: ${filtered_dic[$item]}"
+    echo "$item: ${filtered_dic[$item]}" # to calculate pass@k
 done
+
+echo "Calculating pass@k metrics..."
+echo "------------------------"
+if [ $files_to_run -ge 1 ]; then
+    calculate_pass_at_k $files_to_run 1
+fi
+if [ $files_to_run -ge 5 ]; then
+    calculate_pass_at_k $files_to_run 5
+fi

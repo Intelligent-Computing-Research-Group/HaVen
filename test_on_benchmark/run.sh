@@ -268,6 +268,16 @@ exec_shell() {
 test_one_file() {
     local testfile="$1"
     local benchmark_name="$2"
+    local file_id="$3"
+    
+    # Files to record design names with errors
+    local syntax_error_file="syntax_errors_${file_id}.txt"
+    local func_error_file="func_errors_${file_id}.txt"
+    
+    # Initialize files (clear old data)
+    > "$syntax_error_file"
+    > "$func_error_file"
+    
     success_keywords=("Passed" "passed" "Total mismatched samples is 0")
 
     for design in "${design_name[@]}"; do
@@ -283,23 +293,33 @@ test_one_file() {
             make clean
             make vcs
             # Check if the simv file is generated
-            if [[ -f "simv" ]]; then
-                current_value=${filtered_dic["$design"]}
-                updated_syntax=$(echo "$current_value" | jq '.syntax_success += 1')
-                filtered_dic["$design"]=$updated_syntax
+            if [[ ! -f "simv" ]]; then
+                # If no simv file, there is a syntax error
+                echo "$design" >> "$syntax_error_file"
+            else
                 # Run 'make sim' and check the result
                 exec_shell "make sim > output.txt"
                 if [[ -f "output.txt" ]]; then
+                    local func_error_found=true
+                    # Check if any success keyword exists in the output.txt
                     while IFS= read -r line; do
-                    for keyword in "${success_keywords[@]}"; do
-                        if [[ "$line" == *"$keyword"* ]]; then
-                            current_value=${filtered_dic["$design"]}
-                            updated_func=$(echo "$current_value" | jq '.func_success += 1')
-                            filtered_dic["$design"]=$updated_func
-                            break 2
-                        fi
-                    done
+                        for keyword in "${success_keywords[@]}"; do
+                            if [[ "$line" == *"$keyword"* ]]; then
+                                func_error_found=false
+                                break 2
+                            fi
+                        done
                     done < "output.txt"
+                    
+                    # If no success keywords found, it's a functionality error
+                    if $func_error_found; then
+                        echo "$design" >> "$func_error_file"
+                    else
+                        # If success keywords found, count it as a successful functionality test
+                        current_value=${filtered_dic["$design"]}
+                        updated_func=$(echo "$current_value" | jq '.func_success += 1')
+                        filtered_dic["$design"]=$updated_func
+                    fi
                 fi
             fi
 
@@ -345,17 +365,17 @@ for key in "${!filtered_dic[@]}"; do
     echo "[$key]=${filtered_dic[$key]}"
 done
 
-path="/data/YYY/LLM-verilog/rtllm_result" # TODO
+path="/data/YYY/github_repo/HaVen/test_on_benchmark/model_output/new_data_RTLLM_0.2" # TODO
 
 benchmark_name="RTLLM" # TODO
 file_id=1
 n=0
 
-files_to_run=5 # TODO
+files_to_run=10 # TODO
 
-# three arguments are file of code to test, benchmark name, and filtered_dic
+# three arguments are file of code to test, benchmark name, and current file id
 while ((n < files_to_run)); do
-    test_one_file "test_${file_id}" "${benchmark_name}"
+    test_one_file "test_${file_id}" "${benchmark_name}" "$file_id"
     ((n++))
     ((file_id++))
 done

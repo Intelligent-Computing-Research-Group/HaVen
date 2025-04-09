@@ -269,68 +269,86 @@ test_one_file() {
     local testfile="$1"
     local benchmark_name="$2"
     local file_id="$3"
-    
-    # Files to record design names with errors
-    local syntax_error_file="syntax_errors_${file_id}.txt"
-    local func_error_file="func_errors_${file_id}.txt"
-    
-    # Initialize files (clear old data)
-    > "$syntax_error_file"
-    > "$func_error_file"
-    
-    success_keywords=("Passed" "passed" "Total mismatched samples is 0")
+
+    # capture the directory where the script was invoked
+    local script_dir
+    script_dir="$(pwd)"
+
+    # log files for this file_id
+    local syntax_error_file="${script_dir}/${file_id}_syntax.txt"
+    local func_error_file="${script_dir}/${file_id}_func.txt"
+
+    # initialize (truncate) the logs
+    : > "$syntax_error_file"
+    : > "$func_error_file"
+
+    # keywords to look for in a successful run
+    local success_keywords=("Passed" "passed" "Total mismatched samples is 0")
 
     for design in "${design_name[@]}"; do
-        if [[ -f "testbench/${benchmark_name}/${design}/makefile" ]]; then
-            local makefile_path="testbench/${benchmark_name}/${design}/makefile"
-            local makefile_content=$(<"$makefile_path")
-            local modified_makefile_content="${makefile_content//\$\{TEST_DESIGN\}/${path}\/${testfile}\/${design}}"
-            echo -e "$modified_makefile_content" > "$makefile_path"
+        local design_dir="testbench/${benchmark_name}/${design}"
+        local makefile_path="${design_dir}/makefile"
 
-            # Run 'make vcs' in the design folder
+        # only proceed if there's a makefile
+        if [[ -f "$makefile_path" ]]; then
+            # read & patch the makefile
+            local original_mk
+            original_mk=$(<"$makefile_path")
+            local patched_mk="${original_mk//\$\{TEST_DESIGN\}/${path}/${testfile}/${design}}"
+            echo -e "$patched_mk" > "$makefile_path"
+
+            # compile & simulate
             pushd "testbench/${benchmark_name}" > /dev/null
             pushd "$design" > /dev/null
             make clean
             make vcs
-            # Check if the simv file is generated
-            if [[ ! -f "simv" ]]; then
-                # If no simv file, there is a syntax error
-                echo "$design" >> "$syntax_error_file"
-            else
-                # Run 'make sim' and check the result
+
+            if [[ -f "simv" ]]; then
+                # --- syntax succeeded ---
+                # bump syntax_success
+                local cur
+                cur=${filtered_dic["$design"]}
+                filtered_dic["$design"]=$(jq '.syntax_success += 1' <<<"$cur")
+
+                # run sim and check for any of the success keywords
                 exec_shell "make sim > output.txt"
-                if [[ -f "output.txt" ]]; then
-                    local func_error_found=true
-                    # Check if any success keyword exists in the output.txt
+                local func_ok=false
+                if [[ -f output.txt ]]; then
                     while IFS= read -r line; do
-                        for keyword in "${success_keywords[@]}"; do
-                            if [[ "$line" == *"$keyword"* ]]; then
-                                func_error_found=false
+                        for kw in "${success_keywords[@]}"; do
+                            if [[ "$line" == *"$kw"* ]]; then
+                                # --- functionality succeeded ---
+                                cur=${filtered_dic["$design"]}
+                                filtered_dic["$design"]=$(jq '.func_success += 1' <<<"$cur")
+                                func_ok=true
                                 break 2
                             fi
                         done
-                    done < "output.txt"
-                    
-                    # If no success keywords found, it's a functionality error
-                    if $func_error_found; then
-                        echo "$design" >> "$func_error_file"
-                    else
-                        # If success keywords found, count it as a successful functionality test
-                        current_value=${filtered_dic["$design"]}
-                        updated_func=$(echo "$current_value" | jq '.func_success += 1')
-                        filtered_dic["$design"]=$updated_func
-                    fi
+                    done < output.txt
                 fi
+
+                if ! $func_ok; then
+                    # record functionality failure
+                    echo "$design" >> "$func_error_file"
+                fi
+            else
+                # --- syntax failed ---
+                echo "$design" >> "$syntax_error_file"
             fi
 
-            echo -e "$makefile_content" > "makefile"
+            # restore the original makefile
+            echo -e "$original_mk" > "$makefile_path"
+
             popd > /dev/null
             popd > /dev/null
-            progress_bar=$((progress_bar + 1))
+
+            ((progress_bar++))
         fi
     done
 
-    echo "${testfile} done"
+    echo "${testfile} done."
+    echo "  syntax errors logged in: $syntax_error_file"
+    echo "  func   errors logged in: $func_error_file"
 }
 
 

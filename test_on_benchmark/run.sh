@@ -283,43 +283,35 @@ test_one_file() {
     : > "$func_error_file"
 
     # keywords to look for in a successful run
-    local success_keywords=("Passed" "passed" "Total mismatched samples is 0")
+    success_keywords=("Passed" "passed" "Total mismatched samples is 0")
 
     for design in "${design_name[@]}"; do
-        local design_dir="testbench/${benchmark_name}/${design}"
-        local makefile_path="${design_dir}/makefile"
+        if [[ -f "testbench/${benchmark_name}/${design}/makefile" ]]; then
+            local makefile_path="testbench/${benchmark_name}/${design}/makefile"
+            local makefile_content=$(<"$makefile_path")
+            local modified_makefile_content="${makefile_content//\$\{TEST_DESIGN\}/${path}\/${testfile}\/${design}}"
+            echo -e "$modified_makefile_content" > "$makefile_path"
 
-        # only proceed if there's a makefile
-        if [[ -f "$makefile_path" ]]; then
-            # read & patch the makefile
-            local original_mk
-            original_mk=$(<"$makefile_path")
-            local patched_mk="${original_mk//\$\{TEST_DESIGN\}/${path}/${testfile}/${design}}"
-            echo -e "$patched_mk" > "$makefile_path"
-
-            # compile & simulate
+            # Run 'make vcs' in the design folder
             pushd "testbench/${benchmark_name}" > /dev/null
             pushd "$design" > /dev/null
             make clean
             make vcs
 
             if [[ -f "simv" ]]; then
-                # --- syntax succeeded ---
-                # bump syntax_success
-                local cur
-                cur=${filtered_dic["$design"]}
-                filtered_dic["$design"]=$(jq '.syntax_success += 1' <<<"$cur")
-
-                # run sim and check for any of the success keywords
+                current_value=${filtered_dic["$design"]}
+                updated_syntax=$(echo "$current_value" | jq '.syntax_success += 1')
+                filtered_dic["$design"]=$updated_syntax
+                # Run 'make sim' and check the result
                 exec_shell "make sim > output.txt"
                 local func_ok=false
                 if [[ -f output.txt ]]; then
                     while IFS= read -r line; do
                         for kw in "${success_keywords[@]}"; do
                             if [[ "$line" == *"$kw"* ]]; then
-                                # --- functionality succeeded ---
-                                cur=${filtered_dic["$design"]}
-                                filtered_dic["$design"]=$(jq '.func_success += 1' <<<"$cur")
+                                current_value=${filtered_dic["$design"]}
+                                updated_func=$(echo "$current_value" | jq '.func_success += 1')
+                                filtered_dic["$design"]=$updated_func
                                 func_ok=true
                                 break 2
                             fi
@@ -336,13 +328,10 @@ test_one_file() {
                 echo "$design" >> "$syntax_error_file"
             fi
 
-            # restore the original makefile
-            echo -e "$original_mk" > "$makefile_path"
-
+            echo -e "$makefile_content" > "makefile"
             popd > /dev/null
             popd > /dev/null
-
-            ((progress_bar++))
+            progress_bar=$((progress_bar + 1))
         fi
     done
 

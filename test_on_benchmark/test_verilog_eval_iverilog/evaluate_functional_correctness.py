@@ -1,7 +1,7 @@
 import fire
 import sys
 
-from verilog_eval.evaluation import evaluate_functional_correctness
+from evaluation import evaluate_functional_correctness
 
 
 def entry_point(

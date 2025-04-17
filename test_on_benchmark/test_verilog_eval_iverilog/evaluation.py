@@ -6,8 +6,8 @@ import itertools
 import numpy as np
 import tqdm
 
-from verilog_eval.data import read_problems, stream_jsonl, write_jsonl
-from verilog_eval.execution import check_correctness, clean_up_simulation
+from data import read_problems, stream_jsonl, write_jsonl
+from execution import check_correctness, clean_up_simulation
 
 
 def estimate_pass_at_k(

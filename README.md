@@ -28,6 +28,7 @@ Code Generation Aligned with HDL Engineers</h1></div>
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Reproducing HaVen: Important Notes](#Reproducing HaVen: Important Notes)
 - [Citation](#citation)
 
 
@@ -169,6 +170,31 @@ Our repository includes a script to evaluate the model's performance on **Verilo
 ### Datasets
 
 Our dataset is available on [HaVen-KL-Dataset](https://huggingface.co/datasets/yangyiyao/HaVen-KL-Dataset).
+
+## Reproducing HaVen: Important Notes
+
+To ensure accurate reproduction of results in our paper, **please follow the configuration guidelines below**.
+
+### ✅ 1. Use the SI-CoT Prompt
+* **Location**: [`model_inference/model_input/SI-CoT_prompt.jsonl`](model_inference/model_input/SI-CoT_prompt.jsonl)
+
+### ✅ 2. Properly Extract the Verilog Code
+
+The raw output from HaVen is **not always in standardized code format**. Specifically:
+
+* The model **may omit code blocks** like \`\`\`verilog and \`\`\`.
+* The model **may generate incomplete module headers**, or occasionally omit them altogether.
+
+To address this, we include a dedicated **code extractor** that post-processes the raw output and retrieves well-formed Verilog code for further use or evaluation.
+* **Location**: [`model_inference/postprocess.py`](model_inference/postprocess.py)
+* 
+### 📦 3. Future Standardization: KL-Dataset and HaVen vNext
+
+We are fully aware of the current output formatting issues and are working to improve this for better reproducibility.
+
+* In a future release, we will upload an updated version of the **KL-dataset** (our fine-tuning data) and an improved version of the **HaVen model**.
+* This new version will enforce **standardized Verilog code formatting** in all outputs, including proper code block encapsulation and complete module headers.
+
 
 ## Citation
 If you find this repository or our research helpful, please cite our paper:

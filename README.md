@@ -28,7 +28,7 @@ Code Generation Aligned with HDL Engineers</h1></div>
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Reproducing HaVen](#ReproducingHaVen)
+- [Reproducing_HaVen](#Reproducing_HaVen)
 - [Citation](#citation)
 
 
@@ -171,7 +171,7 @@ Our repository includes a script to evaluate the model's performance on **Verilo
 
 Our dataset is available on [HaVen-KL-Dataset](https://huggingface.co/datasets/yangyiyao/HaVen-KL-Dataset).
 
-## Reproducing HaVen
+## Reproducing_HaVen
 
 To ensure accurate reproduction of results in our paper, **please follow the configuration guidelines below**.
 

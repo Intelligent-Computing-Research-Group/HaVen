@@ -187,7 +187,7 @@ The raw output from HaVen is **not always in standardized code format**. Specifi
 
 To address this, we include a dedicated **code extractor** that post-processes the raw output and retrieves well-formed Verilog code for further use or evaluation.
 * **Location**: [`model_inference/postprocess.py`](model_inference/postprocess.py)
-* 
+
 ### 📦 3. Future Standardization: KL-Dataset and HaVen vNext
 
 We are fully aware of the current output formatting issues and are working to improve this for better reproducibility.

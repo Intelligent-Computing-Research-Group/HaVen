@@ -28,7 +28,7 @@ Code Generation Aligned with HDL Engineers</h1></div>
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Reproducing HaVen](#Reproducing_HaVen)
+- [Reproducing HaVen](#ReproducingHaVen)
 - [Citation](#citation)
 
 

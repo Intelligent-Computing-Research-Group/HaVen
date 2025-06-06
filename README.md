@@ -26,9 +26,9 @@ Code Generation Aligned with HDL Engineers</h1></div>
 ## Contents
 - [News](#news)
 - [Introduction](#introduction)
+- [Reproducing_HaVen](#Reproducing_HaVen)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Reproducing_HaVen](#Reproducing_HaVen)
 - [Citation](#citation)
 
 
@@ -42,6 +42,34 @@ Code Generation Aligned with HDL Engineers</h1></div>
 
 This repository accompanies the paper **"HaVen: Hallucination-Mitigated LLM for Verilog Code Generation Aligned with HDL Engineers"**, accepted at DATE 2025. HaVen is a novel framework designed to enhance the alignment of large language models (LLMs) with hardware description language (HDL) engineering practices, mitigating logical, symbolic, and knowledge hallucinations in Verilog code generation.
 
+## Reproducing_HaVen
+
+To ensure accurate reproduction of results in our paper, **please follow the configuration guidelines below**. These settings are critical to achieving HaVen's full potential.
+
+### ✅ 1. Use the SI-CoT Prompt
+* **Location**: [`model_inference/model_input/SI-CoT_prompt.jsonl`](model_inference/model_input/SI-CoT_prompt.jsonl)
+* When evaluating on VerilogEval-Human benchmark, please make sure to load and use the prompt exactly as provided when querying the model.
+
+### ✅ 2. Properly Extract the Verilog Code
+
+The raw output from HaVen is **not always in standardized code format**. Specifically:
+
+* The model **may omit code blocks** like \`\`\`verilog and \`\`\`.
+* The model **may generate incomplete module headers**, or occasionally omit them altogether. 
+
+#### Why module headers may be missing:
+
+This behavior typically occurs because the model is prompted with a module header at the **end of the SI-CoT prompt**, followed immediately by the model’s code generation. As a result, the model assumes the header has already been written and begins directly with the internal body of the module.
+
+In such cases, the correct approach is to:
+
+* **Extract the module header** from the end of the prompt.
+* **Prepend it** to the model’s generated response to reconstruct a complete, well-formed Verilog module.
+
+To address this, we include a dedicated **code extractor** that post-processes the raw output and retrieves well-formed Verilog code for further use or evaluation.
+* **Location**: [`model_inference/postprocess.py`](model_inference/postprocess.py)
+
+We recommend using `postprocess.py` for any benchmarking or integration work. It inserts missing module headers when necessary.
 
 ## Installation 
 ### 1. Install LLaMA-Factory for Training and Fine-tuning
@@ -170,35 +198,6 @@ Our repository includes a script to evaluate the model's performance on **Verilo
 ### Datasets
 
 Our dataset is available on [HaVen-KL-Dataset](https://huggingface.co/datasets/yangyiyao/HaVen-KL-Dataset).
-
-## Reproducing_HaVen
-
-To ensure accurate reproduction of results in our paper, **please follow the configuration guidelines below**. These settings are critical to achieving HaVen's full potential.
-
-### ✅ 1. Use the SI-CoT Prompt
-* **Location**: [`model_inference/model_input/SI-CoT_prompt.jsonl`](model_inference/model_input/SI-CoT_prompt.jsonl)
-* When evaluating on VerilogEval-Human benchmark, please make sure to load and use the prompt exactly as provided when querying the model.
-
-### ✅ 2. Properly Extract the Verilog Code
-
-The raw output from HaVen is **not always in standardized code format**. Specifically:
-
-* The model **may omit code blocks** like \`\`\`verilog and \`\`\`.
-* The model **may generate incomplete module headers**, or occasionally omit them altogether. 
-
-#### Why module headers may be missing:
-
-This behavior typically occurs because the model is prompted with a module header at the **end of the SI-CoT prompt**, followed immediately by the model’s code generation. As a result, the model assumes the header has already been written and begins directly with the internal body of the module.
-
-In such cases, the correct approach is to:
-
-* **Extract the module header** from the end of the prompt.
-* **Prepend it** to the model’s generated response to reconstruct a complete, well-formed Verilog module.
-
-To address this, we include a dedicated **code extractor** that post-processes the raw output and retrieves well-formed Verilog code for further use or evaluation.
-* **Location**: [`model_inference/postprocess.py`](model_inference/postprocess.py)
-
-We recommend using `postprocess.py` for any benchmarking or integration work. It inserts missing module headers when necessary
 
 ## Citation
 If you find this repository or our research helpful, please cite our paper:

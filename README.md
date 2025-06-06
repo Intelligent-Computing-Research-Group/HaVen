@@ -173,28 +173,32 @@ Our dataset is available on [HaVen-KL-Dataset](https://huggingface.co/datasets/y
 
 ## Reproducing_HaVen
 
-To ensure accurate reproduction of results in our paper, **please follow the configuration guidelines below**.
+To ensure accurate reproduction of results in our paper, **please follow the configuration guidelines below**. These settings are critical to achieving HaVen's full potential.
 
 ### ✅ 1. Use the SI-CoT Prompt
 * **Location**: [`model_inference/model_input/SI-CoT_prompt.jsonl`](model_inference/model_input/SI-CoT_prompt.jsonl)
+* When evaluating on VerilogEval-Human benchmark, please make sure to load and use the prompt exactly as provided when querying the model.
 
 ### ✅ 2. Properly Extract the Verilog Code
 
 The raw output from HaVen is **not always in standardized code format**. Specifically:
 
 * The model **may omit code blocks** like \`\`\`verilog and \`\`\`.
-* The model **may generate incomplete module headers**, or occasionally omit them altogether.
+* The model **may generate incomplete module headers**, or occasionally omit them altogether. 
+
+#### Why module headers may be missing:
+
+This behavior typically occurs because the model is prompted with a module header at the **end of the SI-CoT prompt**, followed immediately by the model’s code generation. As a result, the model assumes the header has already been written and begins directly with the internal body of the module.
+
+In such cases, the correct approach is to:
+
+* **Extract the module header** from the end of the prompt.
+* **Prepend it** to the model’s generated response to reconstruct a complete, well-formed Verilog module.
 
 To address this, we include a dedicated **code extractor** that post-processes the raw output and retrieves well-formed Verilog code for further use or evaluation.
 * **Location**: [`model_inference/postprocess.py`](model_inference/postprocess.py)
 
-### 📦 3. Future Standardization: KL-Dataset and HaVen vNext
-
-We are fully aware of the current output formatting issues and are working to improve this for better reproducibility.
-
-* In a future release, we will upload an updated version of the **KL-dataset** (our fine-tuning data) and an improved version of the **HaVen model**.
-* This new version will enforce **standardized Verilog code formatting** in all outputs, including proper code block encapsulation and complete module headers.
-
+We recommend using `postprocess.py` for any benchmarking or integration work. It inserts missing module headers when necessary
 
 ## Citation
 If you find this repository or our research helpful, please cite our paper:

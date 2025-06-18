@@ -415,3 +415,6 @@ fi
 if [ $files_to_run -ge 5 ]; then
     calculate_pass_at_k $files_to_run 5
 fi
+if [ $files_to_run -ge 10 ]; then
+    calculate_pass_at_k $files_to_run 10
+fi
